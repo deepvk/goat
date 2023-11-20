@@ -1,27 +1,38 @@
-# py_template
+# Парсер заданий с "решу егэ"
 
-Template repository for Python projects.
-Use it to create a new repo, but feel free to adopt for your use-cases.
+Парсер написан на scrapy.
 
-## Structure
+На данный момент хорошо парсит варианты егэ по обществознанию с сайта [решу егэ](https://soc-ege.sdamgia.ru/?redir=1).
 
-There are several directories to organize your code:
-- `src`: Main directory for your modules, e.g., models or dataset implementations, train loops, metrics.
-- `scripts`: Directory to define scripts to interact with modules, e.g., run training or evaluation, run data preprocessing, collect statistic.
-- `tests`: Directory for tests, this may include multiple unit tests for different parts of logic.
+## Структура
 
-You can create new directories for your need.
-For example, you can create a `Notebooks` folder for Jupyter notebooks, such as `EDA.ipynb`.
+В парсер с помощью аргумента командной строки передаётся номер варианта егэ по обществознанию
+и название выходного файла, в котором будет храниться результат парсинга.
 
-## Usage
+На выходе парсер генерирует jsonl файл с именем **ege_data.jsonl**.
 
-First of all,
-navigate to [`pyproject.toml`](./pyproject.toml) and set up `name` and `url` properties according to your project.
+Также в папке *src* есть скрипт **dataset_demonstration.py**.
 
-For correct work of the import system:
-1. Use absolute import statements starting from `src`. For example, `from src.model import MySuperModel`
-2. Execute scripts as modules, i.e. use `python -m scripts.<module_name>`. See details about `-m` flag [here](https://docs.python.org/3/using/cmdline.html#cmdoption-m).
+Если его запустить (как запускать описано ниже), то
+в консоль выведутся по одному заданию каждого типа в запаршенном варианте.
 
-To keep your code clean, use `black`, `isort`, and `mypy`
-(install everything from [`requirements.dev.txt`](./requirements.dev.txt)).
-[`pyproject.toml`](./pyproject.toml) already defines their parameters, but you can change them if you want.
+## Использование
+
+Сначала надо установить нужные библиотеки.
+Для этого из корневой папки надо запустить эту команду -
+
+`pip install -r requirements.txt`
+
+Чтобы запустить парсер, надо перейти в директорию *src/sdamgia_parser* и
+оттуда в консоли запустить эту команду:
+
+`scrapy crawl ege -a test_id='your test id' -O ege_data.jsonl`
+
+Your test id - номер варианта по обществознанию на сайте решу егэ
+
+Я тестировал парсер в основном на варианте с id - 10861731.
+
+Чтобы запустить скрипт **dataset_demonstration.py** надо запустить
+в корневой директории эту команду:
+
+`python .\src\dataset_demonstration.py`
