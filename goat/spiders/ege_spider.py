@@ -1,6 +1,6 @@
 import scrapy
 from scrapy.http import Response
-from sdamgia_parser.spider_utils import *
+from goat.spider_utils import *
 
 exam_type = ExamType.EGE
 subject = "soc"

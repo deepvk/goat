@@ -1,7 +1,7 @@
 [metadata]
-name = "py_template"
-author = "deepvk"
-url = "https://github.com/deepvk/py_template"
+name = "goat"
+author = "deepvk, VyrodovMikhail"
+url = "https://github.com/deepvk/goat"
 
 [tool.isort]
 profile = "black"
@@ -11,7 +11,7 @@ line_length = 120
 line-length = 120
 
 [tool.mypy]
-files = ["src"]
+files = ["goat"]
 install_types = "True"
 non_interactive = "True"
 disallow_untyped_defs = "True"

@@ -1,38 +1,36 @@
-# Парсер заданий с "решу егэ"
+# Parser for tasks from "Sdamgia"
 
-Парсер написан на scrapy.
+This parser is using scrapy lib.
 
-На данный момент хорошо парсит варианты егэ по обществознанию с сайта [решу егэ](https://soc-ege.sdamgia.ru/?redir=1).
+Currently, program parses tests from the Unified State Exam (EGE)
+in Social Studies from the [sdamgia](https://soc-ege.sdamgia.ru/?redir=1) website.
 
-## Структура
+## Structure
 
-В парсер с помощью аргумента командной строки передаётся номер варианта егэ по обществознанию
-и название выходного файла, в котором будет храниться результат парсинга.
+Program takes the EGE test id and the desired output file
+name as command-line arguments. The parsing result is stored in a jsonl file
+named **ege_data.jsonl**.
 
-На выходе парсер генерирует jsonl файл с именем **ege_data.jsonl**.
+Additionally, in the *goat* folder, there is a script called **dataset_demonstration.py**.
 
-Также в папке *src* есть скрипт **dataset_demonstration.py**.
+After you run it (instructions on how to run it are provided below), it will display one task of each type
+from the parsed test in the console.
 
-Если его запустить (как запускать описано ниже), то
-в консоль выведутся по одному заданию каждого типа в запаршенном варианте.
+## Usage
 
-## Использование
-
-Сначала надо установить нужные библиотеки.
-Для этого из корневой папки надо запустить эту команду -
+First, you need to install the necessary libraries. To do this, run the following command from the root folder:
 
 `pip install -r requirements.txt`
 
-Чтобы запустить парсер, надо перейти в директорию *src/sdamgia_parser* и
-оттуда в консоли запустить эту команду:
+To run the parser, navigate to the goat directory
+and run the following command in the console:
 
 `scrapy crawl ege -a test_id='your test id' -O ege_data.jsonl`
 
-Your test id - номер варианта по обществознанию на сайте решу егэ
+*your test id* is the test id for the Social Studies exam on the [sdamgia](https://soc-ege.sdamgia.ru/?redir=1) website.
 
-Я тестировал парсер в основном на варианте с id - 10861731.
+Parser was tested on the test with id - 10861731.
 
-Чтобы запустить скрипт **dataset_demonstration.py** надо запустить
-в корневой директории эту команду:
+To run the dataset_demonstration.py script, execute the following command in the root directory:
 
-`python .\src\dataset_demonstration.py`
+`python .\goat\dataset_demonstration.py`

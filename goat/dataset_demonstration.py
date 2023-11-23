@@ -1,9 +1,9 @@
 import pandas as pd
 
 from dataset_utils import remove_unnecessary_symbols
-from sdamgia_parser.sdamgia_parser.spider_utils import TaskType
+from spider_utils import TaskType
 
-file_path = "./src/sdamgia_parser/ege_data.jsonl"
+file_path = "./goat/ege_data.jsonl"
 ege_data = pd.read_json(path_or_buf=file_path, lines=True)
 text_columns = ["task_text", "solution_text", "answer"]
 for column in text_columns:

@@ -7,10 +7,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = "sdamgia_parser"
+BOT_NAME = "goat"
 
-SPIDER_MODULES = ["sdamgia_parser.spiders"]
-NEWSPIDER_MODULE = "sdamgia_parser.spiders"
+SPIDER_MODULES = ["goat.spiders"]
+NEWSPIDER_MODULE = "goat.spiders"
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
