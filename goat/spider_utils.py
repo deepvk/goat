@@ -74,7 +74,7 @@ _SUBJECT_BASE_URL_ct = {
 }
 
 
-def get_exam_link(subject: str, exam_type: ExamType):
+def get_exam_link(subject: str, exam_type: ExamType) -> str:
     if exam_type == ExamType.OGE:
         return _SUBJECT_BASE_URL_oge[subject]
     elif exam_type == ExamType.EGE:
