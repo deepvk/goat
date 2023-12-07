@@ -20,6 +20,8 @@ class SdamgiaTaskItem(scrapy.Item):
     url = scrapy.Field()
     fipi_links = scrapy.Field()
     sources_links = scrapy.Field()
+    task_points = scrapy.Field()
+    criteria_table = scrapy.Field()
     html_task = scrapy.Field()
 
     pass

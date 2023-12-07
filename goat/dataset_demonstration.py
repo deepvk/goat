@@ -21,6 +21,8 @@ if len(sootv_tasks) > 0:
     print(sootv_tasks["solution_text"].iloc[0])
     print("----------")
     print(sootv_tasks["answer"].iloc[0])
+    print("----------")
+    print(sootv_tasks["task_points"].iloc[0])
     print("------------------------------")
 
 mult_choice_tasks = sdamgia_data.loc[sdamgia_data["task_type"] == TaskType.MULT_CHOICE]
@@ -31,6 +33,8 @@ if len(mult_choice_tasks) > 0:
     print(mult_choice_tasks["solution_text"].iloc[0])
     print("----------")
     print(mult_choice_tasks["answer"].iloc[0])
+    print("----------")
+    print(mult_choice_tasks["task_points"].iloc[0])
     print("------------------------------")
 
 text_answer_tasks = sdamgia_data.loc[sdamgia_data["task_type"] == TaskType.TEXT_ANSWER]
@@ -44,6 +48,8 @@ if len(text_answer_tasks) > 0:
         print("No answer")
     else:
         print(text_answer_tasks["answer"].iloc[0])
+    print("----------")
+    print(text_answer_tasks["task_points"].iloc[0])
     print("------------------------------")
 
 based_on_text_tasks = sdamgia_data.loc[sdamgia_data["task_type"] == TaskType.QUESTION_ON_TEXT]
@@ -57,3 +63,5 @@ if len(based_on_text_tasks) > 0:
         print("No answer")
     else:
         print(based_on_text_tasks["answer"].iloc[0])
+    print("----------")
+    print(based_on_text_tasks["task_points"].iloc[0])
