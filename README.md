@@ -2,7 +2,7 @@
 
 This parser is using scrapy lib.
 
-Currently, program parses tests from the Unified State Exam (EGE or OGE) 
+Currently, program parses tests from the Unified State Exam (EGE or OGE)
 from the [sdamgia](https://sdamgia.ru/?redir=1) website.
 
 ## Structure
@@ -30,7 +30,7 @@ and run the following command in the console:
 
 *your exam type* indicates from what exam your test was taken. Currently acceptable exam type values are 'ege' and 'oge'.
 
-*your test id* is the test id for the Social Studies exams from the [soc-ege.sdamgia](https://soc-ege.sdamgia.ru/?redir=1) or [soc-oge.sdamgia](https://soc-oge.sdamgia.ru/?redir=1) websites.
+*your test id* is the test id for Unified State Exam in chosen subject from the [sdamgia](https://sdamgia.ru/?redir=1) website.
 
 *output file* is file name that parser will generate or overwrite with parsing output. For example - ege_data.jsonl.
 

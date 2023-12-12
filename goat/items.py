@@ -11,6 +11,7 @@ class SdamgiaTaskItem(scrapy.Item):
     task_id = scrapy.Field()
     topic_id = scrapy.Field()
     task_type = scrapy.Field()
+    is_based_on_text = scrapy.Field()
     exam_type = scrapy.Field()
     task_text = scrapy.Field()
     task_images = scrapy.Field()

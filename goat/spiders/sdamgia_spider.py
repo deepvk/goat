@@ -28,18 +28,9 @@ class SdamgiaSpider(scrapy.Spider):
             after_table1 = task.css("div.wrap_flex_table ~ p.left_margin")
             after_table1_text = after_table1.css("p::text").getall()
             all_tags = task.css("div.pbody > p.left_margin")
-            all_tags_text = all_tags.css("p::text").getall()
-            if self.subject == SdamgiaExamSubject.SOC and topic_id in ("24", "25"):
-                not_included = task_container.css("div.probtext")
-            else:
-                not_included = task_container.css("div.probtext center")
-            not_included_list = not_included.css("*::text").getall()
-            correct_tags_list = []
-            for elem in all_tags_text:
-                if elem not in not_included_list:
-                    correct_tags_list.append(elem)
+            all_tags_text = all_tags.css("*::text").getall()
 
-            for p_tag in correct_tags_list:
+            for p_tag in all_tags_text:
                 if p_tag not in after_table1_text:
                     task_text = task_text + p_tag + "\n"
 
@@ -48,9 +39,9 @@ class SdamgiaSpider(scrapy.Spider):
             for p_tag in after_table1_text:
                 task_text = task_text + p_tag + "\n"
                 task_text = task_text + wrap_scroll_table
-        elif wrap_scroll_table is not None:
+        elif self.subject == SdamgiaExamSubject.SOC and wrap_scroll_table is not None:
             all_tags = task.css("div.pbody > p.left_margin")
-            all_tags_text = all_tags.css("p::text").getall()
+            all_tags_text = all_tags.css("*::text").getall()
             for p_tag in all_tags_text:
                 task_text = task_text + p_tag + "\n"
 
@@ -59,9 +50,9 @@ class SdamgiaSpider(scrapy.Spider):
             text_list = task.css("*::text").getall()
             if self.subject == SdamgiaExamSubject.SOC and topic_id in ("24", "25"):
                 not_included = task_container.css("div.probtext")
+                not_included_list = not_included.css("*::text").getall()
             else:
-                not_included = task_container.css("div.probtext center")
-            not_included_list = not_included.css("*::text").getall()
+                not_included_list = []
             correct_text_list = []
             for elem in text_list:
                 if elem not in not_included_list:
@@ -100,7 +91,7 @@ class SdamgiaSpider(scrapy.Spider):
         full_solution_imgs = [get_exam_link(self.subject, self.exam_type) + src for src in solution_imgs]
         answer = ""
 
-        task_type = determine_task_type(self.subject, self.exam_type, topic_id)
+        task_type, is_based_on_text = determine_task_type(self.subject, self.exam_type, topic_id)
         task_points = determine_task_points(self.subject, self.exam_type, topic_id)
 
         try:
@@ -132,6 +123,7 @@ class SdamgiaSpider(scrapy.Spider):
         task_item["task_id"] = task_id
         task_item["topic_id"] = topic_id
         task_item["task_type"] = task_type
+        task_item["is_based_on_text"] = is_based_on_text
         task_item["exam_type"] = self.exam_type
         task_item["task_text"] = condition["text"]
         task_item["task_images"] = condition["images"]
