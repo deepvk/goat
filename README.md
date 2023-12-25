@@ -1,27 +1,41 @@
-# py_template
+# Parser for tasks from "Sdamgia"
 
-Template repository for Python projects.
-Use it to create a new repo, but feel free to adopt for your use-cases.
+This parser is using scrapy lib.
+
+Currently, program parses tests from the Unified State Exam (EGE or OGE)
+from the [sdamgia](https://sdamgia.ru/?redir=1) website.
 
 ## Structure
 
-There are several directories to organize your code:
-- `src`: Main directory for your modules, e.g., models or dataset implementations, train loops, metrics.
-- `scripts`: Directory to define scripts to interact with modules, e.g., run training or evaluation, run data preprocessing, collect statistic.
-- `tests`: Directory for tests, this may include multiple unit tests for different parts of logic.
+Program takes exam subject, exam type, test id and the desired output file
+name as command-line arguments. The parsing result is supposed to be stored in a jsonl file.
 
-You can create new directories for your need.
-For example, you can create a `Notebooks` folder for Jupyter notebooks, such as `EDA.ipynb`.
+Additionally, in the *goat* folder, there is a script called **dataset_demonstration.py**.
+
+After you run it (instructions on how to run it are provided below), it will display one task of each type
+from the parsed test in the console.
 
 ## Usage
 
-First of all,
-navigate to [`pyproject.toml`](./pyproject.toml) and set up `name` and `url` properties according to your project.
+First, you need to install the necessary libraries. To do this, run the following command from the root folder:
 
-For correct work of the import system:
-1. Use absolute import statements starting from `src`. For example, `from src.model import MySuperModel`
-2. Execute scripts as modules, i.e. use `python -m scripts.<module_name>`. See details about `-m` flag [here](https://docs.python.org/3/using/cmdline.html#cmdoption-m).
+`pip install -r requirements.txt`
 
-To keep your code clean, use `black`, `isort`, and `mypy`
-(install everything from [`requirements.dev.txt`](./requirements.dev.txt)).
-[`pyproject.toml`](./pyproject.toml) already defines their parameters, but you can change them if you want.
+To run the parser, navigate to the goat directory
+and run the following command in the console:
+
+`scrapy crawl sdamgia -a subject='your exam subject' -a exam_type='your exam type' -a test_id='your test id' -O <output file>`
+
+*your exam subject* indicates which subject the exam is in. Currently acceptable subject values are 'soc' and 'lit'.
+
+*your exam type* indicates from what exam your test was taken. Currently acceptable exam type values are 'ege' and 'oge'.
+
+*your test id* is the test id for Unified State Exam in chosen subject from the [sdamgia](https://sdamgia.ru/?redir=1) website.
+
+*output file* is file name that parser will generate or overwrite with parsing output. For example - ege_data.jsonl.
+
+To run the dataset_demonstration.py script, execute the following command in the root directory:
+
+`python .\goat\dataset_demonstration.py -f <parser output file name>`
+
+where *parser output file name* is the name of the jsonl file that parser has generated.
