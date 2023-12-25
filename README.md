@@ -36,6 +36,6 @@ and run the following command in the console:
 
 To run the dataset_demonstration.py script, execute the following command in the root directory:
 
-`python .\goat\dataset_demonstration.py <parser output file name>`
+`python .\goat\dataset_demonstration.py -f <parser output file name>`
 
 where *parser output file name* is the name of the jsonl file that parser has generated.

@@ -24,5 +24,3 @@ class SdamgiaTaskItem(scrapy.Item):
     task_points = scrapy.Field()
     criteria_table = scrapy.Field()
     html_task = scrapy.Field()
-
-    pass

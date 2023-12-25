@@ -1,3 +1,5 @@
+from typing import Any, Sequence
+
 import scrapy
 from scrapy.http import Response
 
@@ -9,8 +11,8 @@ class SdamgiaSpider(scrapy.Spider):
     name = "sdamgia"
 
     def start_requests(self) -> Response:
-        self.exam_type = self.exam_type.upper()
-        self.subject = self.subject.upper()
+        self.exam_type = self.exam_type.upper()  # type: ignore
+        self.subject = self.subject.upper()  # type: ignore
         if self.exam_type not in {"EGE", "OGE"}:
             raise Exception("Wrong exam_type parameter value")
         task_ids = get_test_by_id(self.subject, self.test_id, self.exam_type)
@@ -18,7 +20,7 @@ class SdamgiaSpider(scrapy.Spider):
         for task_url in task_urls:
             yield scrapy.Request(url=task_url, callback=self.parse)
 
-    def parse_condition(self, task_container, topic_id: str) -> dict[str, str]:
+    def parse_condition(self, task_container: Response, topic_id: str) -> dict[str, Sequence[Any]]:
         task = task_container.css("div.nobreak div.pbody")
 
         wrap_flex_table = task.css("div.wrap_flex_table").get()

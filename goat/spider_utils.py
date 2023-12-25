@@ -186,7 +186,7 @@ def determine_task_type(subject: str, exam_type: str, topic_id: str) -> tuple[Ta
         raise Exception("Not supported exam subject")
 
 
-def determine_soc_task_points(exam_type: str, topic_id: str) -> TaskType:
+def determine_soc_task_points(exam_type: str, topic_id: str) -> int:
     if exam_type == ExamType.EGE and topic_id in ("1", "3", "9", "12"):
         task_points = 1
 
@@ -251,7 +251,7 @@ def determine_soc_task_points(exam_type: str, topic_id: str) -> TaskType:
     return task_points
 
 
-def determine_lit_task_points(exam_type: str, topic_id: str) -> TaskType:
+def determine_lit_task_points(exam_type: str, topic_id: str) -> int:
     if exam_type == ExamType.EGE and topic_id in ("1", "2", "3", "6", "7", "8"):
         task_points = 1
 
@@ -282,7 +282,7 @@ def determine_lit_task_points(exam_type: str, topic_id: str) -> TaskType:
     return task_points
 
 
-def determine_task_points(subject: str, exam_type: str, topic_id: str) -> TaskType:
+def determine_task_points(subject: str, exam_type: str, topic_id: str) -> int:
     if subject == SdamgiaExamSubject.SOC:
         return determine_soc_task_points(exam_type, topic_id)
     elif subject == SdamgiaExamSubject.LIT:
@@ -298,6 +298,8 @@ def get_exam_link(subject: str, exam_type: ExamType) -> str:
         return _SUBJECT_BASE_URL_ege[subject]
     elif exam_type == ExamType.CT:
         return _SUBJECT_BASE_URL_ct[subject]
+    else:
+        raise Exception("Unknown exam")
 
 
 def get_test_by_id(subject: str, test_id: str, exam_type: ExamType) -> list[str]:
@@ -309,6 +311,9 @@ def get_test_by_id(subject: str, test_id: str, exam_type: ExamType) -> list[str]
 
     :param test_id: Идентификатор теста
     :type test_id: str
+
+    :param exam_type: Тип экзамена
+    :type exam_type: ExamType
     """
     doujin_page = requests.get(f"{get_exam_link(subject, exam_type)}/test?id={test_id}")
     soup = BeautifulSoup(doujin_page.content, "html.parser")
