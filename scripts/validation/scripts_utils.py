@@ -43,7 +43,7 @@ def get_k_shot_df(val_df: pd.DataFrame, i: int, k: int) -> pd.DataFrame:
     same_tasks = val_df[(val_df["topic_id"] == val_df["topic_id"][i]) & (val_df["exam_type"] == val_df["exam_type"][i])]
     if i in same_tasks.index:
         same_tasks = same_tasks.drop(i, axis=0)
-    same_tasks = same_tasks.sample(frac=1).reset_index(drop=True)
+    same_tasks = same_tasks.sample(frac=1, random_state=1).reset_index(drop=True)
     if k < len(same_tasks):
         return same_tasks[:k]
     else:
