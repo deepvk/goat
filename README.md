@@ -96,7 +96,7 @@ pip install -r requirements.txt
 To run leaderboard backend execute this command from root directory
 (it is supposed that you have set all needed environment variables for database connection):
 
-`python -m goat.backend.app`
+`python -m goat.backend.eval`
 
 After running the script, it will listen to new validation requests in the database.
 After receiving new request it will start validating the model in the request on GOAT dataset.
