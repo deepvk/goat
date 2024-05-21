@@ -1,0 +1,9 @@
+flash-attn==2.5.8
+lm_eval @ git+https://github.com/deepvk/lm-evaluation-harness@goat
+psycopg2==2.9.9
+SQLAlchemy==2.0.29
+torch==2.2.0
+torchdata==0.7.1
+torchtext==0.17.0
+torchvision==0.17.0
+transformer_engine==0.0.0

@@ -1,9 +1,9 @@
 # type: ignore
-import argparse
 import json
 
-from database_helper import DatabaseHelper, EvalResult
 from datasets import get_dataset_config_names, load_dataset
+
+from goat.utils.database_helper import DatabaseHelper, EvalResult
 
 
 def get_datasets_len(tasks):
@@ -24,17 +24,7 @@ def get_datasets_len(tasks):
     return datasets_len
 
 
-if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="This program redacts dataset -_-")
-    parser.add_argument("eval_result_path", type=str, help="Path to evaluation result")
-
-    args = parser.parse_args()
-    with open(args.eval_result_path, "r") as j:
-        contents = json.loads(j.read())
-    evaluation = contents["results"]
-    tasks = get_dataset_config_names("deepvk/goat")
-
-    datasets_len = get_datasets_len(tasks)
+def get_metrics_values(tasks, evaluation, datasets_len):
     metrics = [
         "multi_choice_em_unordered,get-answer",
         "word_in_set,none",
@@ -62,12 +52,19 @@ if __name__ == "__main__":
     multiple_choice_score /= datasets_len["multiple_choice"]
     word_gen_score /= datasets_len["word_gen"]
 
-    model_params = contents["config"]["model_args"].split(",")
-    model_name = None
-    for param in model_params:
-        if "pretrained" in param:
-            model_name = param[11:]
-        break
+    return single_choice_score, multiple_choice_score, word_gen_score
+
+
+def add_results(input_path):
+    with open(input_path, "r") as j:
+        contents = json.loads(j.read())
+    evaluation = contents["results"]
+    tasks = get_dataset_config_names("deepvk/goat")
+
+    datasets_len = get_datasets_len(tasks)
+    single_choice_score, multiple_choice_score, word_gen_score = get_metrics_values(tasks, evaluation, datasets_len)
+
+    model_name = contents["config"]["model"]
 
     eval_result = EvalResult(
         model=model_name,
@@ -78,3 +75,4 @@ if __name__ == "__main__":
 
     db = DatabaseHelper()
     db.add_eval_result(eval_result)
+    db.end_connection()

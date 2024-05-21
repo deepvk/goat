@@ -1,4 +1,3 @@
-custom_css = """
 /* Hides the final AutoEvalColumn */
 #llm-benchmark-tab-table table td:last-child,
 #llm-benchmark-tab-table table th:last-child {
@@ -86,12 +85,3 @@ table th:first-child {
 #box-filter > .form{
     border: 0
 }
-"""
-
-get_window_url_params = """
-    function(url_params) {
-        const params = new URLSearchParams(window.location.search);
-        url_params = Object.fromEntries(params);
-        return url_params;
-    }
-    """

@@ -3,8 +3,8 @@ from typing import Any, Sequence
 import scrapy
 from scrapy.http import Response
 
-from goat.items import SdamgiaTaskItem
-from goat.spider_utils import *
+from goat.parser.items import SdamgiaTaskItem
+from goat.parser.spider_utils import *
 
 
 class SdamgiaSpider(scrapy.Spider):

@@ -1,19 +1,21 @@
 # type: ignore
 import gradio as gr
-from database_helper import DatabaseHelper
-from src_display_css_html_js import custom_css
-from utils import Precision
+
+from goat.frontend.precision import Precision
+
+from ..utils.database_helper import DatabaseHelper, EvalRequest
 
 TITLE = "Goat leaderboard"
 INTRODUCTION_TEXT = "This is really nice introduction text!!!"
 EVALUATION_QUEUE_TEXT = "there is evaluation queue"
+
 
 db_helper = DatabaseHelper()
 
 leaderboard_df = db_helper.get_leaderboard_df()
 
 
-demo = gr.Blocks(css=custom_css)
+demo = gr.Blocks(css="src_display.css")
 with demo:
     gr.HTML(TITLE)
     gr.Markdown(INTRODUCTION_TEXT, elem_classes="markdown-text")
@@ -43,20 +45,11 @@ with demo:
                         value="float16",
                         interactive=True,
                     )
-                    num_fewshot = gr.Number(
-                        label="Fewshot number",
-                        minimum=0,
-                        maximum=5,
-                        step=1,
-                        value=5,
-                        interactive=True,
-                    )
-
             submit_button = gr.Button("Submit Eval")
             submission_result = gr.Markdown()
             submit_button.click(
                 db_helper.add_eval_request,
-                [model_name, model_precision, num_fewshot],
+                [model_name, model_precision],
                 submission_result,
             )
 
