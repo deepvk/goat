@@ -79,7 +79,8 @@ class DatabaseHelper:
                 action(model, precision)
 
     def get_leaderboard_df(self):
-        df = pd.read_sql_table("leaderboard", self.engine)
+        query = "SELECT * FROM leaderboard"
+        df = pd.DataFrame(self.engine.connect().execute(text(query)))
         return df
 
     def end_connection(self):

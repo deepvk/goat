@@ -1,4 +1,6 @@
+# type: ignore
 import json
+from pathlib import Path
 
 from lm_eval import evaluator
 from lm_eval.models.huggingface import HFLM
@@ -13,6 +15,7 @@ def eval(model_name: str, precision: str):
     results = evaluator.simple_evaluate(model=lm, tasks=[taskname])
 
     filename = model_name.replace("/", "__")
+    Path("results").mkdir(exist_ok=True)
     with open(f"results/{filename}.json", "w", encoding="utf-8") as f:
         json.dump(results, f, ensure_ascii=False)
 

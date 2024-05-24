@@ -3,6 +3,35 @@ name = "goat"
 author = "deepvk, VyrodovMikhail"
 url = "https://github.com/deepvk/goat"
 
+[project]
+name = "goat"
+version="0.0.0"
+authors = [
+    {name="deepvk, VyrodovMikhail"}
+]
+description = "A framework for evaluating language models"
+readme = "README.md"
+license = { "text" = "Apache-2.0" }
+requires-python = ">=3.8"
+dependencies = [
+    "beautifulsoup4>=4.12.2",
+    "packaging",
+    "numpy",
+    "pandas",
+    "requests",
+    "typer<0.10.0",
+    "Scrapy>=2.11.0",
+    "gradio",
+    "psycopg2>=2.9.9",
+    "SQLAlchemy>=2.0.29",
+    "torch==2.2.0",
+    "torchdata==0.7.1",
+    "torchtext==0.17.0",
+    "torchvision==0.17.0",
+    "transformer_engine==0.0.0",
+    "lm_eval@git+https://github.com/deepvk/lm-evaluation-harness@goat",
+]
+
 [tool.isort]
 profile = "black"
 line_length = 120
