@@ -28,7 +28,6 @@ def get_metrics_values(tasks, evaluation, datasets_len):
     metrics = [
         "multi_choice_em_unordered,get-answer",
         "word_in_set,none",
-        "multi_choice_em_unordered,get-answer",
         "acc,none",
     ]
 
@@ -45,7 +44,6 @@ def get_metrics_values(tasks, evaluation, datasets_len):
                     multiple_choice_score += datasets_len[task] * evaluation[task][metric]
                 elif "word_gen" in task:
                     word_gen_score += datasets_len[task] * evaluation[task][metric]
-                print(evaluation[task][metric])
                 break
 
     single_choice_score /= datasets_len["single_choice"]

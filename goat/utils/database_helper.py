@@ -28,6 +28,7 @@ class EvalResult:
 class EvalRequest:
     model_name: str
     precision: str
+    validate_big_tasks: bool
 
 
 class DatabaseHelper:
@@ -47,8 +48,10 @@ class DatabaseHelper:
         self.leaderboard = Table("leaderboard", metadata, autoload_with=self.engine)
         self.eval_requests = Table("eval_requests", metadata, autoload_with=self.engine)
 
-    def add_eval_request(self, model_name, precision):
-        request = insert(self.eval_requests).values(model_name=model_name, precision=precision)
+    def add_eval_request(self, model_name, precision, validate_big_tasks):
+        request = insert(self.eval_requests).values(
+            model_name=model_name, precision=precision, validate_big_tasks=validate_big_tasks
+        )
         self.session.execute(request)
         self.session.commit()
 
@@ -72,11 +75,12 @@ class DatabaseHelper:
                 notify = self.connection.notifies.pop()
                 query = "SELECT * FROM eval_requests"
                 df = pd.DataFrame(self.engine.connect().execute(text(query)))
-                model, precision = (
+                model, precision, validate_big_tasks = (
                     df.loc[df["id"] == int(notify.payload)]["model_name"].to_string(index=False),
                     df.loc[df["id"] == int(notify.payload)]["precision"].to_string(index=False),
+                    df.loc[df["id"] == int(notify.payload)]["validate_big_tasks"].to_string(index=False),
                 )
-                action(model, precision)
+                action(model, precision, validate_big_tasks)
 
     def get_leaderboard_df(self):
         query = "SELECT * FROM leaderboard"

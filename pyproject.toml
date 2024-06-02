@@ -30,6 +30,7 @@ dependencies = [
     "torchvision==0.17.0",
     "transformer_engine==0.0.0",
     "lm_eval@git+https://github.com/deepvk/lm-evaluation-harness@goat",
+    "fschat[model_worker,llm_judge]@git+https://github.com/deepvk/FastChat/@goat",
 ]
 
 [tool.isort]

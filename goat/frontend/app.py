@@ -3,7 +3,7 @@ import gradio as gr
 
 from goat.frontend.precision import Precision
 
-from ..utils.database_helper import DatabaseHelper, EvalRequest
+from ..utils.database_helper import DatabaseHelper
 
 TITLE = "Goat leaderboard"
 INTRODUCTION_TEXT = "This is really nice introduction text!!!"
@@ -45,11 +45,15 @@ with demo:
                         value="float16",
                         interactive=True,
                     )
+                    validate_big_tasks = gr.Checkbox(
+                        label="Validate on big text tasks",
+                        info="Do you need to validate your model on tasks that require large text answer?",
+                    )
             submit_button = gr.Button("Submit Eval")
             submission_result = gr.Markdown()
             submit_button.click(
                 db_helper.add_eval_request,
-                [model_name, model_precision],
+                [model_name, model_precision, validate_big_tasks],
                 submission_result,
             )
 
