@@ -5,9 +5,10 @@ from goat.frontend.precision import Precision
 
 from ..utils.database_helper import DatabaseHelper
 
-TITLE = "Goat leaderboard"
-INTRODUCTION_TEXT = "This is really nice introduction text!!!"
-EVALUATION_QUEUE_TEXT = "there is evaluation queue"
+TITLE = """<h1 style="text-align:left;float:left; id="space-title">🤗 GOAT Leaderboard</h1>"""
+INTRODUCTION_TEXT = """
+    Generalized Occupational Aptitude Test (GOAT) Leaderboard. For project details, refer to the <a href="https://github.com/deepvk/goat" target="_blank" style="text-decoration: underline">GOAT GitHub repository</a>.
+    """
 
 
 db_helper = DatabaseHelper()
@@ -28,10 +29,6 @@ with demo:
                 interactive=False,
             )
         with gr.TabItem("🚀 Submit ", elem_id="llm-benchmark-tab-table", id=5):
-            with gr.Column():
-                with gr.Row():
-                    gr.Markdown(EVALUATION_QUEUE_TEXT, elem_classes="markdown-text")
-
             with gr.Row():
                 gr.Markdown("# ✉️✨ Submit your model here!", elem_classes="markdown-text")
 

@@ -6,6 +6,13 @@ This project consists of three different subprojects:
 - Web app with models' leaderboard after their validation on GOAT dataset;
 
 
+## Installation
+Firstly, you need to install the necessary libraries. To do this, run the following commands:
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Parser
 This parser was used to gather tasks for GOAT dataset. It is using Scrapy lib.
 
@@ -23,13 +30,6 @@ After you run it (instructions on how to run it are provided below), it will dis
 from the parsed test in the console.
 
 ### Usage
-Firstly, you need to install the necessary libraries. To do this, run the following commands:
-
-```bash
-cd goat/parser
-pip install -r requirements.txt
-```
-
 To run the parser, run the following command from goat/parser directory:
 
 ```bash
@@ -61,13 +61,6 @@ My leaderboard follows similar structure that [Open LLM Leaderboard](https://hug
 It is a gradio web app that is used in a HuggingFace space. Database info is stored in environment variables.
 
 ### Usage
-Firstly, you need to install the necessary libraries. To do this, run the following commands:
-
-```bash
-cd goat/frontend
-pip install -r requirements.txt
-```
-
 In this app you can send your model validation request to
 backend database and after some time validation result on your model will appear
 in the leaderboard folder after reloading the app.
@@ -86,11 +79,11 @@ the model in the request on GOAT dataset using modified
 After finishing validation it adds the resulting scores in the leaderboard.
 
 ### Usage
-Firstly, you need to install the necessary libraries. To do this, run the following commands:
+Firstly, you need to install one additional library to run leaderboard backend. To do this, run the following commands:
 
 ```bash
-cd goat/backend
-pip install -r requirements.txt
+pip install -U wheel
+pip install flash-attn==2.5.8
 ```
 
 To run leaderboard backend execute this command from root directory
