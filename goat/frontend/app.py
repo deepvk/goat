@@ -1,4 +1,3 @@
-# type: ignore
 import gradio as gr
 
 from goat.frontend.precision import Precision

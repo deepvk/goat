@@ -1,4 +1,3 @@
-# type: ignore
 import json
 import os
 from pathlib import Path
@@ -12,7 +11,7 @@ from goat.backend.add_results import add_results
 from goat.utils.database_helper import DatabaseHelper
 
 
-def eval(model_name: str, precision: str, generate_fastchat: bool):
+def eval(model_name: str, precision: str, generate_fastchat: bool) -> None:
     lm = HFLM(pretrained=model_name, dtype=precision)
     taskname = "goat"
     results = evaluator.simple_evaluate(model=lm, tasks=[taskname])

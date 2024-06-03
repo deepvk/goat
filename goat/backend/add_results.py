@@ -1,4 +1,3 @@
-# type: ignore
 import json
 
 from datasets import get_dataset_config_names, load_dataset
@@ -6,7 +5,7 @@ from datasets import get_dataset_config_names, load_dataset
 from goat.utils.database_helper import DatabaseHelper, EvalResult
 
 
-def get_datasets_len(tasks):
+def get_datasets_len(tasks: list[str]) -> dict[str, int]:
     datasets_len = dict()
     datasets_len["single_choice"] = 0
     datasets_len["multiple_choice"] = 0
@@ -24,16 +23,18 @@ def get_datasets_len(tasks):
     return datasets_len
 
 
-def get_metrics_values(tasks, evaluation, datasets_len):
+def get_metrics_values(
+    tasks: list[str], evaluation: dict[str, dict], datasets_len: dict[str, int]
+) -> tuple[float, float, float]:
     metrics = [
         "multi_choice_em_unordered,get-answer",
         "word_in_set,none",
         "acc,none",
     ]
 
-    single_choice_score = 0
-    multiple_choice_score = 0
-    word_gen_score = 0
+    single_choice_score = 0.0
+    multiple_choice_score = 0.0
+    word_gen_score = 0.0
 
     for task in tasks:
         for metric in metrics:
@@ -53,7 +54,7 @@ def get_metrics_values(tasks, evaluation, datasets_len):
     return single_choice_score, multiple_choice_score, word_gen_score
 
 
-def add_results(input_path):
+def add_results(input_path: str) -> None:
     with open(input_path, "r") as j:
         contents = json.loads(j.read())
     evaluation = contents["results"]

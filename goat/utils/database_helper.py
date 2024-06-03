@@ -1,7 +1,7 @@
-# type: ignore
 import os
 import select
 from dataclasses import dataclass
+from typing import Callable
 
 import pandas as pd
 import psycopg2
@@ -31,15 +31,15 @@ class EvalRequest:
     validate_big_tasks: bool
 
 
-def postgres_str_to_bool(val):
-    if val == 'True':
+def postgres_str_to_bool(val: str) -> bool:
+    if val == "True":
         return True
     else:
         return False
 
 
 class DatabaseHelper:
-    def __init__(self):
+    def __init__(self) -> None:
         self.engine = create_engine(
             f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_IP}:{POSTGRES_PORT}/{POSTGRES_DB}",
             echo=True,
@@ -55,14 +55,14 @@ class DatabaseHelper:
         self.leaderboard = Table("leaderboard", metadata, autoload_with=self.engine)
         self.eval_requests = Table("eval_requests", metadata, autoload_with=self.engine)
 
-    def add_eval_request(self, model_name, precision, validate_big_tasks):
+    def add_eval_request(self, model_name: str, precision: str, validate_big_tasks: bool) -> None:
         request = insert(self.eval_requests).values(
             model_name=model_name, precision=precision, validate_big_tasks=validate_big_tasks
         )
         self.session.execute(request)
         self.session.commit()
 
-    def add_eval_result(self, eval_result):
+    def add_eval_result(self, eval_result: EvalResult) -> None:
         stmt = insert(self.leaderboard).values(
             model=eval_result.model,
             single_choice=eval_result.single_choice,
@@ -72,7 +72,7 @@ class DatabaseHelper:
         self.session.execute(stmt)
         self.session.commit()
 
-    def listen_to_new_requests(self, action):
+    def listen_to_new_requests(self, action: Callable[[str, str, bool], None]) -> None:
         cur = self.connection.cursor()
         cur.execute("LISTEN id;")
         while True:
@@ -85,14 +85,16 @@ class DatabaseHelper:
                 model, precision, validate_big_tasks = (
                     df.loc[df["id"] == int(notify.payload)]["model_name"].to_string(index=False),
                     df.loc[df["id"] == int(notify.payload)]["precision"].to_string(index=False),
-                    postgres_str_to_bool(df.loc[df["id"] == int(notify.payload)]["validate_big_tasks"].to_string(index=False)),
+                    postgres_str_to_bool(
+                        df.loc[df["id"] == int(notify.payload)]["validate_big_tasks"].to_string(index=False)
+                    ),
                 )
                 action(model, precision, validate_big_tasks)
 
-    def get_leaderboard_df(self):
+    def get_leaderboard_df(self) -> pd.DataFrame:
         query = "SELECT * FROM leaderboard"
         df = pd.DataFrame(self.engine.connect().execute(text(query)))
         return df
 
-    def end_connection(self):
+    def end_connection(self) -> None:
         self.connection.close()
