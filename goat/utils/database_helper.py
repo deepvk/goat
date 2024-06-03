@@ -31,6 +31,13 @@ class EvalRequest:
     validate_big_tasks: bool
 
 
+def postgres_str_to_bool(val):
+    if val == 'True':
+        return True
+    else:
+        return False
+
+
 class DatabaseHelper:
     def __init__(self):
         self.engine = create_engine(
@@ -78,7 +85,7 @@ class DatabaseHelper:
                 model, precision, validate_big_tasks = (
                     df.loc[df["id"] == int(notify.payload)]["model_name"].to_string(index=False),
                     df.loc[df["id"] == int(notify.payload)]["precision"].to_string(index=False),
-                    df.loc[df["id"] == int(notify.payload)]["validate_big_tasks"].to_string(index=False),
+                    postgres_str_to_bool(df.loc[df["id"] == int(notify.payload)]["validate_big_tasks"].to_string(index=False)),
                 )
                 action(model, precision, validate_big_tasks)
 
