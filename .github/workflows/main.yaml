@@ -15,7 +15,9 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install -r requirements.txt -r requirements.dev.txt
-          pip install wheel setuptools flash-attn==2.5.8 --no-build-isolation
+          pip install -U wheel
+          pip uninstall -y flash-attn
+          pip install flash-attn==2.5.8 --no-build-isolation
       - name: "black"
         run: black . --check --diff --color
       - name: "isort"
