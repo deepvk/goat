@@ -16,8 +16,7 @@ create table if not exists public.eval_requests
         constraint eval_requests_pk
             primary key,
     model_name  varchar not null,
-    precision   varchar not null,
-    validate_big_tasks boolean not null
+    precision   varchar not null
 );
 
 alter table public.eval_requests

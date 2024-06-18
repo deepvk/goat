@@ -30,6 +30,12 @@ After you run it (instructions on how to run it are provided below), it will dis
 from the parsed test in the console.
 
 ### Usage
+Firstly, you need to install parser dependencies. To do this, run the following command:
+
+```bash
+pip install -e ".[parser]"
+```
+
 To run the parser, run the following command from goat/parser directory:
 
 ```bash
@@ -61,6 +67,12 @@ My leaderboard follows similar structure that [Open LLM Leaderboard](https://hug
 It is a gradio web app that is used in a HuggingFace space. Database info is stored in environment variables.
 
 ### Usage
+Firstly, you need to install frontend dependencies. To do this, run the following command:
+
+```bash
+pip install -e ".[frontend]"
+```
+
 In this app you can send your model validation request to
 backend database and after some time validation result on your model will appear
 in the leaderboard folder after reloading the app.
@@ -75,13 +87,14 @@ To run leaderboard web app execute this command from root directory
 ### Structure
 Leaderboard backend after receiving new validation request validate
 the model in the request on GOAT dataset using modified
-[LM Evaluation Harness benchmark](https://github.com/deepvk/lm-evaluation-harness/tree/goat) from deepvk repository.
+[LM Evaluation Harness benchmark](https://github.com/deepvk/lm-evaluation-harness/tree/goat) and [FastChat LLM-as-judge benchmark](https://github.com/deepvk/FastChat/tree/goat/fastchat/llm_judge) from deepvk repositories.
 After finishing validation it adds the resulting scores in the leaderboard.
 
 ### Usage
-Firstly, you need to install one additional library to run leaderboard backend. To do this, run the following commands:
+Firstly, you need to install backend dependencies. To do this, run the following commands:
 
 ```bash
+pip install -e ".[backend]"
 pip install -U wheel
 pip install flash-attn==2.5.8
 ```

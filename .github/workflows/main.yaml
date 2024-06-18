@@ -20,6 +20,6 @@ jobs:
       - name: "isort"
         run: isort . --check --diff
       - name: "mypy"
-        run: mypy --ignore-missing-imports
+        run: mypy
       - name: "pytests"
         run: pytest
