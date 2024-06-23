@@ -77,7 +77,6 @@ class SdamgiaSpider(scrapy.Spider):
         task_item = SdamgiaTaskItem()
         url = response.url
         info = response.xpath('//div[@class="prob_maindiv"][starts-with(@id, "maindiv")]')
-
         task_id = url[len(get_exam_link(self.subject, self.exam_type)) + len("/problem?id=") :]
         topic_text = info.css("span.prob_nums::text").get()
         if "Тип" in topic_text:
@@ -106,17 +105,17 @@ class SdamgiaSpider(scrapy.Spider):
         sources_span = info.css('span:contains("Источник")')
         sources_hrefs = sources_span.css("a::attr(href)").getall()
         if not sources_hrefs:
-            sources_span = info.xpath("//span[contains(text(), 'Источник')]/following-sibling::*")
+            sources_span = info.xpath(".//span[contains(text(), 'Источник')]/following-sibling::*")
             sources_hrefs = sources_span.css("a::attr(href)").getall()
 
-        full_sources_hrefs = [get_exam_link(self.subject, self.exam_type) + href for href in sources_hrefs]
+        full_sources_hrefs = [get_exam_link(self.subject, self.exam_type) + href for href in set(sources_hrefs)]
 
         fipi_span = info.css('span:contains("кодификатора ФИПИ")')
         fipi_hrefs = fipi_span.css("a::attr(href)").getall()
         if not fipi_hrefs:
-            fipi_span = info.xpath("//span[contains(text(), 'кодификатора ФИПИ')]/following-sibling::*")
+            fipi_span = info.xpath(".//span[contains(text(), 'кодификатора ФИПИ')]/following-sibling::*")
             fipi_hrefs = fipi_span.css("a::attr(href)").getall()
-        full_fipi_hrefs = [get_exam_link(self.subject, self.exam_type) + href for href in fipi_hrefs]
+        full_fipi_hrefs = [get_exam_link(self.subject, self.exam_type) + href for href in set(fipi_hrefs)]
 
         criteria_table = info.xpath('//div[@class="prob_crits"]//div[@class="pbody"]//table').get()
         if not criteria_table:

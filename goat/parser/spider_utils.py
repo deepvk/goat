@@ -1,7 +1,7 @@
 from enum import Enum
 
 import requests
-from bs4 import BeautifulSoup
+import scrapy
 
 
 class ExamType(str, Enum):
@@ -177,11 +177,43 @@ def determine_lit_task_type(exam_type: str, topic_id: str) -> tuple[TaskType, bo
     return task_type, is_based_on_text
 
 
+def determine_rus_task_type(exam_type: str, topic_id: str) -> tuple[TaskType, bool]:
+    if exam_type == ExamType.EGE and topic_id in ("1", "5", "6", "7", "24", "27"):
+        task_type = TaskType.TEXT_ANSWER
+
+    elif exam_type == ExamType.OGE and topic_id in ("1", "2", "3", "4", "5", "8", "9", "12", "13"):
+        task_type = TaskType.TEXT_ANSWER
+
+    elif exam_type == ExamType.EGE and topic_id in ("8", "26"):
+        task_type = TaskType.SOOTV
+
+    elif exam_type == ExamType.EGE and ((topic_id in ("2", "3", "4", "25")) or (int(topic_id) in range(9, 24))):
+        task_type = TaskType.MULT_CHOICE
+
+    elif exam_type == ExamType.OGE and topic_id in ("6", "7", "10", "11"):
+        task_type = TaskType.MULT_CHOICE
+
+    else:
+        raise Exception("Wrong parsed task_type")
+
+    is_based_on_text = False
+
+    if exam_type == ExamType.OGE and topic_id in ("2", "3", "10", "11", "12", "13"):
+        is_based_on_text = True
+
+    elif exam_type == ExamType.EGE and topic_id in ("1", "2", "3", "22", "23", "24", "25", "26", "27"):
+        is_based_on_text = True
+
+    return task_type, is_based_on_text
+
+
 def determine_task_type(subject: str, exam_type: str, topic_id: str) -> tuple[TaskType, bool]:
     if subject == SdamgiaExamSubject.SOC:
         return determine_soc_task_type(exam_type, topic_id)
     elif subject == SdamgiaExamSubject.LIT:
         return determine_lit_task_type(exam_type, topic_id)
+    elif subject == SdamgiaExamSubject.RUS:
+        return determine_rus_task_type(exam_type, topic_id)
     else:
         raise Exception("Not supported exam subject")
 
@@ -282,11 +314,41 @@ def determine_lit_task_points(exam_type: str, topic_id: str) -> int:
     return task_points
 
 
+def determine_rus_task_points(exam_type: str, topic_id: str) -> int:
+    if exam_type == ExamType.EGE and int(topic_id) in range(1, 8) or int(topic_id) in range(9, 26):
+        task_points = 1
+
+    elif exam_type == ExamType.EGE and topic_id == "8":
+        task_points = 2
+
+    elif exam_type == ExamType.EGE and topic_id == "26":
+        task_points = 3
+
+    elif exam_type == ExamType.EGE and topic_id == "27":
+        task_points = 21
+
+    elif exam_type == ExamType.OGE and int(topic_id) in range(2, 13):
+        task_points = 1
+
+    elif exam_type == ExamType.OGE and topic_id == "1":
+        task_points = 6
+
+    elif exam_type == ExamType.OGE and topic_id == "13":
+        task_points = 16
+
+    else:
+        raise Exception("Wrong parsed task_type")
+
+    return task_points
+
+
 def determine_task_points(subject: str, exam_type: str, topic_id: str) -> int:
     if subject == SdamgiaExamSubject.SOC:
         return determine_soc_task_points(exam_type, topic_id)
     elif subject == SdamgiaExamSubject.LIT:
         return determine_lit_task_points(exam_type, topic_id)
+    elif subject == SdamgiaExamSubject.RUS:
+        return determine_rus_task_points(exam_type, topic_id)
     else:
         raise Exception("Not supported exam subject")
 
@@ -316,5 +378,7 @@ def get_test_by_id(subject: str, test_id: str, exam_type: ExamType) -> list[str]
     :type exam_type: ExamType
     """
     doujin_page = requests.get(f"{get_exam_link(subject, exam_type)}/test?id={test_id}")
-    soup = BeautifulSoup(doujin_page.content, "html.parser")
-    return [i.text.split()[-1] for i in soup.find_all("span", {"class": "prob_nums"})]
+    selector = scrapy.Selector(text=doujin_page.content, type="html")
+    prob_nums_texts = selector.css("span.prob_nums a::text").getall()
+
+    return prob_nums_texts

@@ -31,7 +31,6 @@ backend = [
     "fschat[model_worker,llm_judge]@git+https://github.com/deepvk/FastChat",
 ]
 parser = [
-    "beautifulsoup4>=4.12.2",
     "packaging",
     "numpy",
     "pandas",
