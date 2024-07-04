@@ -21,11 +21,25 @@ class SdamgiaSpider(scrapy.Spider):
             yield scrapy.Request(url=task_url, callback=self.parse)
 
     def parse_condition(self, task_container: Response, topic_id: str) -> dict[str, Sequence[Any]]:
-        task = task_container.css("div.nobreak div.pbody")
+        task = task_container.xpath('.//div[@class="nobreak"]/div[@class="pbody"][starts-with(@id, "body")]')[0]
+        _, based_on_text = determine_task_type(self.subject, self.exam_type, topic_id)
+        if based_on_text:
+            text_container = task_container.xpath('.//div[@class="nobreak"]/div[@class="probtext"]')
+            text_list = text_container.css("*::text").getall()
+            modified_strings = []
+            for i in range(len(text_list)):
+                s = text_list[i]
+                if s.endswith("."):
+                    s += "\n"
+
+                modified_strings.append(s)
+
+            task_text = "".join(modified_strings) + "\n"
+        else:
+            task_text = ""
 
         wrap_flex_table = task.css("div.wrap_flex_table").get()
         wrap_scroll_table = task.css("table:not(div.wrap_flex_table)").get()
-        task_text = ""
         if wrap_flex_table is not None and wrap_scroll_table is not None:
             after_table1 = task.css("div.wrap_flex_table ~ p.left_margin")
             after_table1_text = after_table1.css("p::text").getall()
@@ -49,18 +63,13 @@ class SdamgiaSpider(scrapy.Spider):
 
             task_text = task_text + wrap_scroll_table
         else:
-            text_list = task.css("*::text").getall()
-            if self.subject == SdamgiaExamSubject.SOC and topic_id in ("24", "25"):
-                not_included = task_container.css("div.probtext")
-                not_included_list = not_included.css("*::text").getall()
-            else:
-                not_included_list = []
-            correct_text_list = []
-            for elem in text_list:
-                if elem not in not_included_list:
-                    correct_text_list.append(elem)
-
-            task_text = " ".join(correct_text_list)
+            p_list = task.xpath("./p")
+            for i in range(len(p_list)):
+                parts = p_list[i].xpath(".//text()").getall()
+                if i < len(p_list) - 1 and len("".join(parts)) > 1:
+                    task_text += "".join(parts) + "\n"
+                else:
+                    task_text += "".join(parts)
 
         answers_div = task_container.css("div.answers")
         if answers_div.get() is not None:
