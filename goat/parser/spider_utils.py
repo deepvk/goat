@@ -13,7 +13,7 @@ class ExamType(str, Enum):
 
 class TaskType(str, Enum):
     MULT_CHOICE = "MULT_CHOICE"
-    SOOTV = "SOOTV"
+    MATCHING = "MATCHING"
     TEXT_ANSWER = "TEXT_ANSWER"
 
 
@@ -126,10 +126,10 @@ def determine_soc_task_type(exam_type: str, topic_id: str) -> tuple[TaskType, bo
         task_type = TaskType.MULT_CHOICE
 
     elif exam_type == ExamType.EGE and topic_id in ("3", "6", "13", "15"):
-        task_type = TaskType.SOOTV
+        task_type = TaskType.MATCHING
 
     elif exam_type == ExamType.OGE and topic_id in ("15", "19"):
-        task_type = TaskType.SOOTV
+        task_type = TaskType.MATCHING
 
     elif exam_type == ExamType.EGE and topic_id in ("17", "18", "19", "20", "21", "22", "23", "24", "25"):
         task_type = TaskType.TEXT_ANSWER
@@ -158,7 +158,7 @@ def determine_lit_task_type(exam_type: str, topic_id: str) -> tuple[TaskType, bo
         task_type = TaskType.TEXT_ANSWER
 
     elif exam_type == ExamType.EGE and topic_id in ("2"):
-        task_type = TaskType.SOOTV
+        task_type = TaskType.MATCHING
 
     elif exam_type == ExamType.EGE and topic_id in ("8"):
         task_type = TaskType.MULT_CHOICE
@@ -181,17 +181,20 @@ def determine_rus_task_type(exam_type: str, topic_id: str) -> tuple[TaskType, bo
     if exam_type == ExamType.EGE and topic_id in ("1", "5", "6", "7", "24", "27"):
         task_type = TaskType.TEXT_ANSWER
 
-    elif exam_type == ExamType.OGE and topic_id in ("1", "2", "3", "4", "5", "8", "9", "12", "13"):
+    elif exam_type == ExamType.OGE and topic_id in ("1", "8", "9", "12", "13"):
         task_type = TaskType.TEXT_ANSWER
 
     elif exam_type == ExamType.EGE and topic_id in ("8", "26"):
-        task_type = TaskType.SOOTV
+        task_type = TaskType.MATCHING
 
     elif exam_type == ExamType.EGE and ((topic_id in ("2", "3", "4", "25")) or (int(topic_id) in range(9, 24))):
         task_type = TaskType.MULT_CHOICE
 
-    elif exam_type == ExamType.OGE and topic_id in ("6", "7", "10", "11"):
+    elif exam_type == ExamType.OGE and topic_id in ("2", "3", "5", "6", "7", "10", "11"):
         task_type = TaskType.MULT_CHOICE
+
+    elif exam_type == ExamType.OGE and topic_id in "4":
+        task_type = TaskType.MATCHING
 
     else:
         raise Exception("Wrong parsed task_type")

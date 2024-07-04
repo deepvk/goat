@@ -18,7 +18,7 @@ if __name__ == "__main__":
     sdamgia_data = sdamgia_data.sort_values("topic_id")
     task_description = {
         TaskType.MULT_CHOICE: "выбор вариантов ответа",
-        TaskType.SOOTV: "установление соответствия",
+        TaskType.MATCHING: "установление соответствия",
         TaskType.TEXT_ANSWER: "текстовый ответ",
     }
 
